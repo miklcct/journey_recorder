@@ -36,3 +36,13 @@ input {
 .currency_column {
     min-width: 3em;
 }
+
+[title] {
+    text-decoration: underline dotted;
+}
+
+[class="required"]::after {
+    content: '*';
+    font-size: 0.5em;
+    vertical-align: super;
+}

@@ -99,7 +99,7 @@ if ($this->journey !== NULL) {
                 <col class="content"/>
             </colgroup>
             <tr>
-                <th><label for="type">type</label></th>
+                <th><label for="type" class="required">type</label></th>
                 <td>
                     <select id="type" name="type" data-required="required">
                         <option value=""></option>
@@ -128,7 +128,10 @@ $show_input = function (string $field, bool $required) {
     $id = str_replace(' ', '_', $field);
 ?>
             <tr>
-                <th><label for="<?= xml($id) ?>"><?= xml($field) ?></label></th>
+                <th><label
+                    for="<?= xml($id) ?>"
+                    <?= $required ? 'class="required"' : '' ?>
+                ><?= xml($field) ?></label></th>
                 <td>
                     <input
                         id="<?= xml($id) ?>"
@@ -151,7 +154,7 @@ $show_time_input = function (string $time_field, string $time_offset_field) {
     $time_offset_field_id = str_replace(' ', '_', $time_offset_field);
 ?>
     <tr>
-        <th><label for="<?= xml($time_field_id) ?>"><?= xml($time_field) ?></label></th>
+        <th><label for="<?= xml($time_field_id) ?>" class="required"><?= xml($time_field) ?></label></th>
         <td>
             <input
                     id="<?= xml($time_field_id) ?>"
@@ -163,7 +166,7 @@ $show_time_input = function (string $time_field, string $time_offset_field) {
         </td>
     </tr>
     <tr>
-        <th><label for="<?= xml($time_offset_field_id) ?>"><?= xml($time_offset_field) ?></label></th>
+        <th><label for="<?= xml($time_offset_field_id) ?>" class="required"><?= xml($time_offset_field) ?></label></th>
         <td>
             <input
                     id="<?= xml($time_offset_field_id) ?>"
@@ -174,7 +177,7 @@ $show_time_input = function (string $time_field, string $time_offset_field) {
                     step="0.25"
                     data-required="required"
             />
-            hours from UTC
+            hours ahead of UTC
         </td>
     </tr>
 <?php
@@ -188,7 +191,7 @@ $show_time_input('alighting time', 'alighting time offset');
 
 ?>
             <tr>
-                <th><label for="distance">distance</label></th>
+                <th><label for="distance" title="If left blank, it will be filled from the most recent identical journey if available.">distance</label></th>
                 <td>
                     <input
                         id="distance"
@@ -239,33 +242,33 @@ for ($i = 0; $i < 5; ++$i) {
                     </select>
                     <details>
                         <summary>Create a new ticket</summary>
-                        <div><label>description <input type="text" size="64" name="ticket uses[<?= xml($i) ?>][description]"/></label></div>
-                        <div><label>currency <input type="text" placeholder="XXX" value="<?= xml($this->defaultCurrency) ?>" size="3" minlength="3" maxlength="3" name="ticket uses[<?= xml($i) ?>][currency]"/></label></div>
+                        <div><label title="Leave the selection blank and enter something here to create a new ticket">description <input type="text" size="64" name="ticket uses[<?= xml($i) ?>][description]"/></label></div>
+                        <div><label title="Enter the 3-letter ISO currency code.">currency <input type="text" placeholder="XXX" value="<?= xml($this->defaultCurrency) ?>" size="3" minlength="3" maxlength="3" name="ticket uses[<?= xml($i) ?>][currency]"/></label></div>
                         <div><label>price <input type="number" min="0" step="any" name="ticket uses[<?= xml($i) ?>][price]"/></label></div>
-                        <div><label>carnets <input type="number" value="1" min="1" step="1" name="ticket uses[<?= xml($i) ?>][carnets]"/></label></div>
+                        <div><label title="Enter 1 for a single, return or period. Enter the appropriate number for a carnet consisting of multiple identical tickets.">carnets <input type="number" value="1" min="1" step="1" name="ticket uses[<?= xml($i) ?>][carnets]"/></label></div>
                     </details>
                 </td>
             </tr>
             <tr>
-                <th><label for="ticket_uses_<?= xml($i) ?>_new_carnet">new carnet?</label></th>
+                <th><label title="Tick if the ticket, or a new ticket in the carnet, is first used. Untick for the return journey in a return ticket, after breaking the journey, or subsequent journeys in a period ticket." for="ticket_uses_<?= xml($i) ?>_new_carnet">new carnet?</label></th>
                 <td>
                     <input type="checkbox" id="ticket_uses_<?= xml($i) ?>_new_carnet" name="ticket uses[<?= xml($i) ?>][new carnet]" checked="checked"/>
                 </td>
             </tr>
             <tr>
-                <th><label for="ticket_uses_<?= xml($i) ?>_expire">expire?</label></th>
+                <th><label title="Tick if the ticket is fully used or expired, i.e. can't be used again. For a carnet tick only if all the tickets are fully used." for="ticket_uses_<?= xml($i) ?>_expire">expire?</label></th>
                 <td>
                     <input type="checkbox" id="ticket_uses_<?= xml($i) ?>_expire" name="ticket uses[<?= xml($i) ?>][expire]"/>
                 </td>
             </tr>
             <tr>
-                <th><label for="ticket_uses_<?= xml($i) ?>_cover from"><a title="split ticketing - leave blank if not split">cover from</a></label></th>
+                <th><label for="ticket_uses_<?= xml($i) ?>_cover from"><a title="Enter the starting point if the ticket doesn't cover the whole journey. If left blank it is assumed to cover the whole journey.">cover from</a></label></th>
                 <td>
                     <input type="number" min="0" step="0.01" id="ticket_uses_<?= xml($i) ?>_cover from" name="ticket uses[<?= xml($i) ?>][cover from]"/> km
                 </td>
             </tr>
             <tr>
-                <th><label for="ticket_uses_<?= xml($i) ?>_cover to"><a title="split ticketing - leave blank if not split">cover to</a></label></th>
+                <th><label for="ticket_uses_<?= xml($i) ?>_cover to"><a title="Enter the ending point if the ticket doesn't cover the whole journey. If left blank it is assumed to cover the whole journey.">cover to</a></label></th>
                 <td>
                     <input type="number" min="0" step="0.01" id="ticket_uses_<?= xml($i) ?>_cover to" name="ticket uses[<?= xml($i) ?>][cover to]"/> km
                 </td>
@@ -288,7 +291,7 @@ if ($i > 1) {
 foreach (
     [
         'host' => [$this->defaultHost, 'text'],
-        'port' => [$this->defaultPort, 'number'],
+        'port' => [$this->defaultPort ?? 3306, 'number'],
         'database' => [$this->defaultDatabase, 'text'],
         'user' => [NULL, 'text'],
         'password' => [NULL, 'password'],
