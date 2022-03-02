@@ -5,16 +5,16 @@ This application helps you to record your public transport journeys while on the
 ## Installation
 ### As a standalone application
 1. Load the schema provided in `resource/transport.sql` into a MariaDB database.
-2. Configure your web server to have `public` as the document root.
+2. Configure your web server to have `public` as the document root, or link a subfolder
+under the document root to the `public` folder.
 
 ### As a library used in a website
 1. Load the schema provided in `resource/transport.sql` into a MariaDB database.
-2. Link the script provided in `public/scripts` into the `scripts` folder of your document root.
-3. Copy or link the stylesheet provided in `public/stylesheets` into the `stylesheets` folder of your document root,
-making any changes if needed to fit into your website.
-4. Provide your implementation of `JourneyResponseFactoryInterface` such that the UI fits into your website.
+2. Provide your implementation of `JourneyResponseFactoryInterface` such that the UI fits into your website.
 The `JourneyView` class and `journey_main.xhtml.php` template is a good starting point.
-5. Add a route in your website to have `JourneyApplication`, which is PSR-15 compliant, as the controller.
+If you are using them, copy or link the script and stylesheet into your public folder
+and pass the web path into the `JourneyView` constructor.
+3. Add a route in your website to have `JourneyApplication`, which is PSR-15 compliant, as the controller.
 
 ## Usage
 This application is for recording journeys only.

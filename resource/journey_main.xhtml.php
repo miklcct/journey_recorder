@@ -11,8 +11,8 @@ use function Miklcct\ThinPhpApp\Utility\nullable;
 <main>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery-deserialize@2.0.0/src/jquery.deserialize.min.js"></script>
-    <script src="/scripts/journey.js"></script>
-    <link rel="stylesheet" href="/stylesheets/journey.css"/>
+    <script src="<?= xml($this->scriptPath) ?>"></script>
+    <link rel="stylesheet" href="<?= xml($this->stylesheetPath) ?>"/>
     <?php
 if ($this->journey !== NULL) {
     $array = array_filter($this->journey->toArray(), static fn(string $key) => $key !== 'tickets', ARRAY_FILTER_USE_KEY);
