@@ -1,0 +1,38 @@
+@charset "UTF-8";
+
+main table {
+    word-break : normal;
+    table-layout : fixed;
+    width : calc(100% - 2em);
+    margin : 1em;
+}
+
+col.header {
+    width : 30%;
+}
+
+input {
+    max-width : 100%;
+}
+
+#hidden_submit_button {
+    display : none;
+}
+
+#tickets_used {
+    border-collapse: collapse;
+}
+
+#tickets_used th, #tickets_used td {
+    border: 1px outset;
+    padding: 0.2em;
+}
+
+.distance_column {
+    width: 3em;
+    text-align: right;
+}
+
+.currency_column {
+    min-width: 3em;
+}
