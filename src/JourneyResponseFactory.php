@@ -7,6 +7,7 @@ use Miklcct\ThinPhpApp\Response\ViewResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\StreamFactoryInterface;
+use Yiisoft\Session\SessionInterface;
 
 class JourneyResponseFactory implements JourneyResponseFactoryInterface {
     public function __construct(
@@ -15,6 +16,7 @@ class JourneyResponseFactory implements JourneyResponseFactoryInterface {
         , private readonly ?string $defaultHost = null
         , private readonly ?int $defaultPort = null
         , private readonly ?string $defaultDatabase = null
+        , private readonly ?SessionInterface $session = null
     ) {
 
         $this->viewResponseFactory = $viewResponseFactory;
@@ -31,9 +33,9 @@ class JourneyResponseFactory implements JourneyResponseFactoryInterface {
                 $this->streamFactory
                 , $journey
                 , $availableTickets
-                , $this->defaultHost
-                , $this->defaultPort
-                , $this->defaultDatabase
+                , $this->defaultHost ?? $this->session->get('host')
+                , $this->defaultPort ?? $this->session->get('port', 3306)
+                , $this->defaultDatabase ?? $this->session->get('database')
             )
         );
     }

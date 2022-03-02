@@ -68,9 +68,10 @@ send(
         , new JourneyResponseFactory(
             new ViewResponseFactory($response_factory)
             , new StreamFactory()
-            , 'localhost'
-            , 3306
-            , 'transport'
+            , null
+            , null
+            , null
+            , $session
         )
         , $session
     ))->handle(ServerRequest::fromGlobals())

@@ -42,6 +42,8 @@ use const MYSQLI_REPORT_ERROR;
 use const MYSQLI_REPORT_STRICT;
 
 class JourneyApplication extends Application {
+    public const SESSION_VERSION = 1;
+
     public function __construct(
         SessionMiddleware $sessionMiddleware
         , ResponseFactoryInterface $responseFactory
@@ -68,6 +70,10 @@ class JourneyApplication extends Application {
     protected function run(ServerRequestInterface $request)
     : ResponseInterface
     {
+        if ($this->session->get('version') !== self::SESSION_VERSION) {
+            $this->session->clear();
+            $this->session->set('version', self::SESSION_VERSION);
+        }
         if ($request->getMethod() === 'POST') {
             $this->processPostRequest($request);
             return $this->responseFactory->createResponse(RFC7231::SEE_OTHER)
@@ -129,6 +135,9 @@ class JourneyApplication extends Application {
     }
 
     private function processPostRequest(ServerRequestInterface $request) : void {
+        $this->session->set('host', $request->getParsedBody()['host']);
+        $this->session->set('port', (int)$request->getParsedBody()['port']);
+        $this->session->set('database', $request->getParsedBody()['database']);
         $connection = $this->createDatabaseConnection($request);
         $connection->query(
         /** @lang MySQL */
