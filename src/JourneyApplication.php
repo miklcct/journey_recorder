@@ -156,6 +156,7 @@ class JourneyApplication extends Application {
                 foreach ($tickets as &$ticket) {
                     $ticket['serial'] ??= '';
                     $ticket['description'] ??= '';
+                    $ticket['currency'] = strtoupper($ticket['currency']);
                     if ($ticket['serial'] === '' && $ticket['description'] !== '') {
                         try {
                             $insert_ticket_statement = query_database(
@@ -163,7 +164,7 @@ class JourneyApplication extends Application {
                                 , 'insert into tickets (description, currency, price, carnets) values (?, ?, ?, ?)'
                                 , 'ssii'
                                 , $ticket['description']
-                                , strtoupper($ticket['currency'])
+                                , $ticket['currency']
                                 , (int)round($ticket['price'] * 10 ** get_currency_digits(strtoupper($ticket['currency'])))
                                 , $ticket['carnets']
                             );
@@ -175,6 +176,7 @@ class JourneyApplication extends Application {
                                 , $exception
                             );
                         }
+                        $this->session->set('currency', $ticket['currency']);
                         $ticket['serial'] = $insert_ticket_statement->insert_id;
                     }
                 }

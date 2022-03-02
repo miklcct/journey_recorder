@@ -240,7 +240,7 @@ for ($i = 0; $i < 5; ++$i) {
                     <details>
                         <summary>Create a new ticket</summary>
                         <div><label>description <input type="text" size="64" name="ticket uses[<?= xml($i) ?>][description]"/></label></div>
-                        <div><label>currency <input type="text" value="GBP" size="3" minlength="3" maxlength="3" name="ticket uses[<?= xml($i) ?>][currency]"/></label></div>
+                        <div><label>currency <input type="text" placeholder="XXX" value="<?= xml($this->defaultCurrency) ?>" size="3" minlength="3" maxlength="3" name="ticket uses[<?= xml($i) ?>][currency]"/></label></div>
                         <div><label>price <input type="number" min="0" step="any" name="ticket uses[<?= xml($i) ?>][price]"/></label></div>
                         <div><label>carnets <input type="number" value="1" min="1" step="1" name="ticket uses[<?= xml($i) ?>][carnets]"/></label></div>
                     </details>

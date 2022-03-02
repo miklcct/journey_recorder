@@ -17,6 +17,7 @@ class JourneyResponseFactory implements JourneyResponseFactoryInterface {
         , private readonly ?int $defaultPort = null
         , private readonly ?string $defaultDatabase = null
         , private readonly ?SessionInterface $session = null
+        , private readonly ?string $defaultCurrency = null
     ) {
 
         $this->viewResponseFactory = $viewResponseFactory;
@@ -36,6 +37,7 @@ class JourneyResponseFactory implements JourneyResponseFactoryInterface {
                 , $this->defaultHost ?? $this->session->get('host')
                 , $this->defaultPort ?? $this->session->get('port', 3306)
                 , $this->defaultDatabase ?? $this->session->get('database')
+                , $this->defaultCurrency ?? $this->session->get('currency')
             )
         );
     }
