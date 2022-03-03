@@ -31,3 +31,11 @@ If no tickets are shown, use the "Get the last inserted journey" button to load 
 The "push into queue" and "pop from queue" buttons are provided to save the form and load it later
 when it's not ready for submission, or in situations when you are temporarily lacking internet access
 (such as in the Tube).
+
+## Demos
+The following demos can be used for testing, but due to privacy concern
+(data will go through servers under author's control) they are not suggested
+being used in production.
+
+* [Standalone site](https://journey.miklcct.com/)
+* [Part of another website](https://miklcct.com/journey)
