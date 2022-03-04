@@ -5,6 +5,7 @@ declare(strict_types=1);
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
     <head>
+        <meta content='width=device-width, initial-scale=1.0' name='viewport'/>
         <title>Insert a journey</title>
     </head>
     <body>
