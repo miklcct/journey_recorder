@@ -226,7 +226,7 @@ INSERT INTO `currencies` (`name`, `code`, `digits`) VALUES
 --
 
 CREATE TABLE `journeys` (
-  `serial` bigint(20) NOT NULL auto_increment,
+  `serial` bigint(20) NOT NULL auto_increment primary key,
   `type` enum('Aeroplane','Helicopter','Train','Metro','Tram','Funicular','BRT','Bus','Trolleybus','Share taxi','Ferry','Cable Car') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `network` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `route` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -309,6 +309,7 @@ CREATE TABLE `journeys fare` (
 ,`speed` double
 ,`fully ticketed` tinyint(1)
 ,`tickets count` int(10) unsigned
+,`currency` varchar(3)
 ,`fare` decimal(58,10)
 ,`fare per km` decimal(64,14)
 );
@@ -333,7 +334,7 @@ CREATE TABLE `ticket apportion` (
 --
 
 CREATE TABLE `tickets` (
-  `serial` int(10) UNSIGNED NOT NULL auto_increment,
+  `serial` int(10) UNSIGNED NOT NULL auto_increment primary key,
   `description` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `currency` char(3) COLLATE utf8mb4_unicode_ci NOT NULL,
   `price` bigint(20) NOT NULL COMMENT 'in smallest unit',
@@ -439,7 +440,7 @@ DELIMITER ;
 --
 DROP TABLE IF EXISTS `journeys fare`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`michael`@`%` SQL SECURITY DEFINER VIEW `journeys fare`  AS SELECT `journeys`.`boarding time stamp` AS `boarding time stamp`, `journeys`.`type` AS `type`, `journeys`.`network` AS `network`, `journeys`.`route` AS `route`, `journeys`.`destination` AS `destination`, `journeys`.`boarding place` AS `boarding place`, `journeys`.`alighting place` AS `alighting place`, `journeys`.`distance` AS `distance`, `journeys`.`time taken` AS `time taken`, `journeys`.`speed` AS `speed`, `is fully ticketed`(`journeys`.`serial`) AS `fully ticketed`, `get tickets count`(`journeys`.`serial`) AS `tickets count`, (select sum(`ticket apportion`.`fare`) from `ticket apportion` where `ticket apportion`.`journey serial` = `journeys`.`serial` and `ticket apportion`.`currency` = 'GBP') AS `fare`, (select sum(`ticket apportion`.`fare`) from `ticket apportion` where `ticket apportion`.`journey serial` = `journeys`.`serial` and `ticket apportion`.`currency` = 'GBP') / `journeys`.`distance` AS `fare per km` FROM `journeys` WHERE `is fully ticketed`(`journeys`.`serial`) AND !exists(select 0 from `ticket apportion` where `ticket apportion`.`journey serial` = `journeys`.`serial` AND `ticket apportion`.`currency` <> 'GBP')ORDER BY `journeys`.`boarding time stamp` desc  ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`michael`@`%` SQL SECURITY DEFINER VIEW `journeys fare`  AS SELECT `journeys`.`boarding time stamp` AS `boarding time stamp`, `journeys`.`type` AS `type`, `journeys`.`network` AS `network`, `journeys`.`route` AS `route`, `journeys`.`destination` AS `destination`, `journeys`.`boarding place` AS `boarding place`, `journeys`.`alighting place` AS `alighting place`, `journeys`.`distance` AS `distance`, `journeys`.`time taken` AS `time taken`, `journeys`.`speed` AS `speed`, `is fully ticketed`(`journeys`.`serial`) AS `fully ticketed`, `get tickets count`(`journeys`.`serial`) AS `tickets count`, (select `ticket apportion`.`currency` from `ticket apportion` where `ticket apportion`.`journey serial` = `journeys`.`serial` limit 1) AS `currency`, (select sum(`ticket apportion`.`fare`) from `ticket apportion` where `ticket apportion`.`journey serial` = `journeys`.`serial`) AS `fare`, (select sum(`ticket apportion`.`fare`) from `ticket apportion` where `ticket apportion`.`journey serial` = `journeys`.`serial`) / `journeys`.`distance` AS `fare per km` FROM `journeys` WHERE `is fully ticketed`(`journeys`.`serial`) AND (select count(distinct ifnull(`ticket apportion`.`currency`,'XXX')) from `ticket apportion` where `ticket apportion`.`journey serial` = `journeys`.`serial`) = 1 ORDER BY `journeys`.`boarding time stamp` desc  ;
 
 -- --------------------------------------------------------
 
@@ -473,7 +474,6 @@ ALTER TABLE `currencies`
 -- Indexes for table `journeys`
 --
 ALTER TABLE `journeys`
-  ADD PRIMARY KEY (`serial`),
   ADD KEY `boarding time stamp` (`boarding time stamp`),
   ADD KEY `alighting time stamp` (`alighting time stamp`),
   ADD KEY `speed` (`speed`);
@@ -482,7 +482,6 @@ ALTER TABLE `journeys`
 -- Indexes for table `tickets`
 --
 ALTER TABLE `tickets`
-  ADD PRIMARY KEY (`serial`),
   ADD KEY `currency` (`currency`);
 
 --
