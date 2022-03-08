@@ -4,12 +4,12 @@ This application helps you to record your public transport journeys while on the
 
 ## Installation
 ### As a standalone application
-1. Load the schema provided in `resource/transport.sql` into a MariaDB database.
+1. Load the schema provided in `resource/base.sql` and all migrations in `resource/migrations/up` into a MariaDB database.
 2. Configure your web server to have `public` as the document root, or link a subfolder
 under the document root to the `public` folder.
 
 ### As a library used in a website
-1. Load the schema provided in `resource/transport.sql` into a MariaDB database.
+1. Load the schema provided in `resource/base.sql` and all migrations in `resource/migrations/up` into a MariaDB database.
 2. Provide your implementation of `JourneyResponseFactoryInterface` such that the UI fits into your website.
 The `JourneyView` class and `journey_main.xhtml.php` template is a good starting point.
 If you are using them, copy or link the script and stylesheet into your public folder
@@ -31,6 +31,11 @@ If no tickets are shown, use the "Get the last inserted journey" button to load 
 The "push into queue" and "pop from queue" buttons are provided to save the form and load it later
 when it's not ready for submission, or in situations when you are temporarily lacking internet access
 (such as in the Tube).
+
+## Database migrations
+The migration files are organised in the structure required by `byjg/migration` package.
+However, the use of the library is not necessary. If you want to use it for your database(s),
+install the CLI interface by running `composer global require byjg/migration-cli`.
 
 ## Demos
 The following demos can be used for testing, but due to privacy concern

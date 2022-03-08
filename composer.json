@@ -20,6 +20,9 @@
     "require-dev" : {
         "roave/security-advisories" : "dev-latest"
     },
+    "suggest" : {
+        "byjg/migration-cli" : "Enable versioning on your database"
+    },
     "autoload" : {
         "psr-4" : {
             "Miklcct\\JourneyRecorder\\" : "src/"
