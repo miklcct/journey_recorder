@@ -309,7 +309,6 @@ CREATE TABLE `journeys fare` (
 ,`speed` double
 ,`fully ticketed` tinyint(1)
 ,`tickets count` int(10) unsigned
-,`currency` varchar(3)
 ,`fare` decimal(58,10)
 ,`fare per km` decimal(64,14)
 );
@@ -440,7 +439,7 @@ DELIMITER ;
 --
 DROP TABLE IF EXISTS `journeys fare`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`michael`@`%` SQL SECURITY DEFINER VIEW `journeys fare`  AS SELECT `journeys`.`boarding time stamp` AS `boarding time stamp`, `journeys`.`type` AS `type`, `journeys`.`network` AS `network`, `journeys`.`route` AS `route`, `journeys`.`destination` AS `destination`, `journeys`.`boarding place` AS `boarding place`, `journeys`.`alighting place` AS `alighting place`, `journeys`.`distance` AS `distance`, `journeys`.`time taken` AS `time taken`, `journeys`.`speed` AS `speed`, `is fully ticketed`(`journeys`.`serial`) AS `fully ticketed`, `get tickets count`(`journeys`.`serial`) AS `tickets count`, (select `ticket apportion`.`currency` from `ticket apportion` where `ticket apportion`.`journey serial` = `journeys`.`serial` limit 1) AS `currency`, (select sum(`ticket apportion`.`fare`) from `ticket apportion` where `ticket apportion`.`journey serial` = `journeys`.`serial`) AS `fare`, (select sum(`ticket apportion`.`fare`) from `ticket apportion` where `ticket apportion`.`journey serial` = `journeys`.`serial`) / `journeys`.`distance` AS `fare per km` FROM `journeys` WHERE `is fully ticketed`(`journeys`.`serial`) AND (select count(distinct ifnull(`ticket apportion`.`currency`,'XXX')) from `ticket apportion` where `ticket apportion`.`journey serial` = `journeys`.`serial`) = 1 ORDER BY `journeys`.`boarding time stamp` desc  ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`michael`@`%` SQL SECURITY DEFINER VIEW `journeys fare`  AS SELECT `journeys`.`boarding time stamp` AS `boarding time stamp`, `journeys`.`type` AS `type`, `journeys`.`network` AS `network`, `journeys`.`route` AS `route`, `journeys`.`destination` AS `destination`, `journeys`.`boarding place` AS `boarding place`, `journeys`.`alighting place` AS `alighting place`, `journeys`.`distance` AS `distance`, `journeys`.`time taken` AS `time taken`, `journeys`.`speed` AS `speed`, `is fully ticketed`(`journeys`.`serial`) AS `fully ticketed`, `get tickets count`(`journeys`.`serial`) AS `tickets count`, (select sum(`ticket apportion`.`fare`) from `ticket apportion` where `ticket apportion`.`journey serial` = `journeys`.`serial` and `ticket apportion`.`currency` = 'GBP') AS `fare`, (select sum(`ticket apportion`.`fare`) from `ticket apportion` where `ticket apportion`.`journey serial` = `journeys`.`serial` and `ticket apportion`.`currency` = 'GBP') / `journeys`.`distance` AS `fare per km` FROM `journeys` WHERE `is fully ticketed`(`journeys`.`serial`) AND !exists(select 0 from `ticket apportion` where `ticket apportion`.`journey serial` = `journeys`.`serial` AND `ticket apportion`.`currency` <> 'GBP')ORDER BY `journeys`.`boarding time stamp` desc  ;
 
 -- --------------------------------------------------------
 
