@@ -54,23 +54,26 @@ if ($this->journey !== NULL) {
             <col class="distance_column" />
             <col class="currency_column" />
             <col />
-            <col />
         </colgroup>
         <thead>
-            <tr><th rowspan="2">From</th><th rowspan="2">To</th><th colspan="3">Ticket</th></tr>
-            <tr><th>Price</th><th>Carnet</th><th>Expired</th></tr>
+            <tr><th rowspan="3">From</th><th rowspan="3">To</th><th colspan="2">Ticket</th></tr>
+            <tr><th>Price</th><th>Advance</th></tr>
+            <tr><th>Carnet</th><th>Expired</th></tr>
         </thead>
         <tbody>
 <?php
         foreach ($this->journey->tickets as $ticket) {
 ?>
             <tr>
-                <td rowspan="2" class="distance_column number"><?= xml(nullable($ticket->coverFrom, fn($distance) => sprintf('%.2f', $distance)) ?? '') ?></td>
-                <td rowspan="2" class="distance_column number"><?= xml(nullable($ticket->coverTo, fn($distance) => sprintf('%.2f', $distance)) ?? '') ?></td>
-                <td colspan="3"><?= xml($ticket->description) ?></td>
+                <td rowspan="3" class="distance_column number"><?= xml(nullable($ticket->coverFrom, fn($distance) => sprintf('%.2f', $distance)) ?? '') ?></td>
+                <td rowspan="3" class="distance_column number"><?= xml(nullable($ticket->coverTo, fn($distance) => sprintf('%.2f', $distance)) ?? '') ?></td>
+                <td colspan="2"><?= xml($ticket->description) ?></td>
             </tr>
             <tr>
                 <td><?= xml($ticket->currencyCode)?> <span class="number"><?= xml(format_currency($ticket->currencyCode, $ticket->price, true)) ?></span></td>
+                <td><?= xml($ticket->advance ? '✓' : '') ?></td>
+            </tr>
+            <tr>
                 <td><?= xml(sprintf('#%d/%d', $ticket->carnetsUsed + 1, $ticket->carnets)) ?></td>
                 <td><?= xml($ticket->expired ? '✓' : '') ?></td>
             </tr>
@@ -246,6 +249,7 @@ for ($i = 0; $i < 5; ++$i) {
                         <div><label title="Enter the 3-letter ISO currency code.">currency <input type="text" placeholder="XXX" value="<?= xml($this->defaultCurrency) ?>" size="3" minlength="3" maxlength="3" name="ticket uses[<?= xml($i) ?>][currency]"/></label></div>
                         <div><label>price <input type="number" min="0" step="any" name="ticket uses[<?= xml($i) ?>][price]"/></label></div>
                         <div><label title="Enter 1 for a single, return or period. Enter the appropriate number for a carnet consisting of multiple identical tickets.">carnets <input type="number" value="1" min="1" step="1" name="ticket uses[<?= xml($i) ?>][carnets]"/></label></div>
+                        <div><label title="Tick if the ticket requires quota-controlled reservation">advance <input type="checkbox" name="ticket uses[<?= xml($i) ?>][advance]" value="1"/></label></div>
                     </details>
                 </td>
             </tr>

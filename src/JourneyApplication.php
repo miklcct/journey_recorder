@@ -161,11 +161,12 @@ class JourneyApplication extends Application {
                         try {
                             $insert_ticket_statement = query_database(
                                 $connection
-                                , 'insert into tickets (description, currency, price, carnets) values (?, ?, ?, ?)'
-                                , 'ssii'
+                                , 'insert into tickets (description, currency, price, advance, carnets) values (?, ?, ?, ?, ?)'
+                                , 'ssiii'
                                 , $ticket['description']
                                 , $ticket['currency']
                                 , (int)round($ticket['price'] * 10 ** get_currency_digits(strtoupper($ticket['currency'])))
+                                , $ticket['advance'] ?? false
                                 , $ticket['carnets']
                             );
                         } catch (mysqli_sql_exception $exception) {
@@ -285,6 +286,7 @@ select
     , tickets.description
     , tickets.currency
     , tickets.price
+    , tickets.advance
     , tickets.carnets
     , `ticket uses`.`carnet sequence`
     , tickets.expired
@@ -305,6 +307,7 @@ EOF
                     , description: $ticket_row['description']
                     , currencyCode: $ticket_row['currency']
                     , price: $ticket_row['price']
+                    , advance: (bool)$ticket_row['advance']
                     , carnets: $ticket_row['carnets']
                     , carnetsUsed: $ticket_row['carnet sequence']
                     , expired: (bool)$ticket_row['expired']
@@ -388,7 +391,7 @@ EOF
         $statement = query_database(
             $connection
             , <<< 'EOF'
-select serial, description, currency, price, carnets, `carnets used`, expired
+select serial, description, currency, price, advance, carnets, `carnets used`, expired
     from `tickets view`
     where not expired
     order by serial
@@ -404,6 +407,7 @@ EOF
                 , $row['description']
                 , $row['currency']
                 , $row['price']
+                , (bool)$row['advance']
                 , $row['carnets']
                 , $row['carnets used']
                 , (bool)$row['expired']
