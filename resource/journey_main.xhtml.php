@@ -215,7 +215,7 @@ for ($i = 0; $i < 5; ++$i) {
 <?php
     }
 ?>
-        <table>
+        <table id="ticket_table">
             <colgroup>
                 <col class="header"/>
                 <col class="content"/>
@@ -245,10 +245,10 @@ for ($i = 0; $i < 5; ++$i) {
                     </select>
                     <details>
                         <summary>Create a new ticket</summary>
-                        <div><label title="Leave the selection blank and enter something here to create a new ticket">description <input type="text" size="64" name="ticket uses[<?= xml($i) ?>][description]"/></label></div>
-                        <div><label title="Enter the 3-letter ISO currency code.">currency <input type="text" placeholder="XXX" value="<?= xml($this->defaultCurrency) ?>" size="3" minlength="3" maxlength="3" name="ticket uses[<?= xml($i) ?>][currency]"/></label></div>
-                        <div><label>price <input type="number" min="0" step="any" name="ticket uses[<?= xml($i) ?>][price]"/></label></div>
-                        <div><label title="Enter 1 for a single, return or period. Enter the appropriate number for a carnet consisting of multiple identical tickets.">carnets <input type="number" value="1" min="1" step="1" name="ticket uses[<?= xml($i) ?>][carnets]"/></label></div>
+                        <div><label title="Leave the selection blank and enter something here to create a new ticket">description <input class="ticket_description" type="text" size="64" name="ticket uses[<?= xml($i) ?>][description]"/></label></div>
+                        <div><label title="Enter the 3-letter ISO currency code.">currency <input data-required="ticket" type="text" placeholder="XXX" value="<?= xml($this->defaultCurrency) ?>" size="3" minlength="3" maxlength="3" name="ticket uses[<?= xml($i) ?>][currency]"/></label></div>
+                        <div><label>price <input data-required="ticket" type="number" min="0" step="any" name="ticket uses[<?= xml($i) ?>][price]"/></label></div>
+                        <div><label title="Enter 1 for a single, return or period. Enter the appropriate number for a carnet consisting of multiple identical tickets.">carnets <input data-required="ticket" type="number" value="1" min="1" step="1" name="ticket uses[<?= xml($i) ?>][carnets]"/></label></div>
                         <div><label title="Tick if the ticket requires quota-controlled reservation">advance <input type="checkbox" name="ticket uses[<?= xml($i) ?>][advance]" value="1"/></label></div>
                     </details>
                 </td>

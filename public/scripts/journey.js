@@ -62,14 +62,30 @@
 
         $(document).ready(
             function () {
+                const $ticket_description_inputs = $('#ticket_table input.ticket_description');
                 $('#submit_button,#hidden_submit_button').click(
                     function () {
-                        $('#journey_table [data-required]').attr('required', 'required');
+                        $('#journey_table [data-required="required"]').attr('required', 'required');
+                        $ticket_description_inputs
+                            .filter((_, element) => (element.value !== ''))
+                            .parent()
+                            .parent()
+                            .siblings()
+                            .find('[data-required="ticket"]')
+                            .attr('required', 'required');
+                        $ticket_description_inputs
+                            .filter((_, element) => (element.value === ''))
+                            .parent()
+                            .parent()
+                            .siblings()
+                            .find('[data-required="ticket"]')
+                            .removeAttr('required')
                     }
                 );
                 $('#last_button').click(
                     function () {
                         $('#journey_table [data-required]').removeAttr('required');
+                        $('#ticket_table [data-required]').removeAttr('required');
                     }
                 );
                 const $form = $('#form');
