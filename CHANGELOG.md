@@ -1,4 +1,10 @@
 # Changelog
+## [1.3.0] - 2022-03-28
+ - Add advance as a ticket property.
+ - Fix distance column width in database to handle 5 integral digits and 2 decimal digits.
+ - Require ticket details in client side validation when creating a new ticket.
+ - Disable ticket creation fields when a ticket is selected.
+
 ## [1.2.0] - 2022-03-02
  - Fix handling of non-fixed-digit currencies.
  - Allow customisation of stylesheet and script paths.
