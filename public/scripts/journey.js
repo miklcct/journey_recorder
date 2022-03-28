@@ -62,6 +62,12 @@
 
         $(document).ready(
             function () {
+                $('#ticket_table select').change(
+                    function () {
+                        $(this).siblings('details').find('input')
+                            .prop('disabled', this.value !== '')
+                    }
+                );
                 const $ticket_description_inputs = $('#ticket_table input.ticket_description');
                 $('#submit_button,#hidden_submit_button').click(
                     function () {
