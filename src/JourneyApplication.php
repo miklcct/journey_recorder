@@ -156,8 +156,8 @@ class JourneyApplication extends Application {
                 foreach ($tickets as &$ticket) {
                     $ticket['serial'] ??= '';
                     $ticket['description'] ??= '';
-                    $ticket['currency'] = strtoupper($ticket['currency']);
                     if ($ticket['serial'] === '' && $ticket['description'] !== '') {
+                        $ticket['currency'] = strtoupper($ticket['currency']);
                         try {
                             $insert_ticket_statement = query_database(
                                 $connection
