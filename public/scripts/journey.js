@@ -101,6 +101,7 @@
                         localStorage.setItem('journeys', serialised_data + $form.serialize() + "\n");
                         show_saved_query_message();
                         $form[0].reset();
+                        $('#ticket_table select').change();
                     }
                 );
                 $('#pop_button').click(
@@ -116,6 +117,7 @@
                         show_saved_query_message();
                         $("input[type='checkbox']").prop('checked', false);
                         $form.deserialize(entry);
+                        $('#ticket_table select').change();
                         return null;
                     }
                 );
