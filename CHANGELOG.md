@@ -1,4 +1,8 @@
 # Changelog
+## [1.3.1] - 2022-03-30
+ - Fix PHP error submitting form with disabled fields.
+ - Fix fields not enabling / disabling correctly when popping / pushing journeys.
+
 ## [1.3.0] - 2022-03-28
  - Add advance as a ticket property.
  - Fix distance column width in database to handle 5 integral digits and 2 decimal digits.
