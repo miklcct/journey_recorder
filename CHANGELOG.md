@@ -1,4 +1,8 @@
 # Changelog
+## [1.3.2]
+ - Fix `carnet sequence` field in `ticket uses` table which should be unsigned.
+   This prevents new tickets to be used without a new carnet.
+
 ## [1.3.1] - 2022-03-30
  - Fix PHP error submitting form with disabled fields.
  - Fix fields not enabling / disabling correctly when popping / pushing journeys.
