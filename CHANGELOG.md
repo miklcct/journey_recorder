@@ -1,4 +1,7 @@
 # Changelog
+## [1.4.1] - 2022-04-19
+ - Add serial into `journeys fare`
+
 ## [1.4.0] - 2022-04-19
  - Fix `carnet sequence` field in `ticket uses` table which should be not nullable.
  - Add group ticket support.
