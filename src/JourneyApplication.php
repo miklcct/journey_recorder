@@ -42,7 +42,7 @@ use const MYSQLI_REPORT_ERROR;
 use const MYSQLI_REPORT_STRICT;
 
 class JourneyApplication extends Application {
-    public const SESSION_VERSION = 1;
+    public const SESSION_VERSION = 2;
 
     public function __construct(
         SessionMiddleware $sessionMiddleware
@@ -193,7 +193,7 @@ class JourneyApplication extends Application {
                     , array_fill(
                         0
                         , count($tickets)
-                        , '? as `input serial`, ? as `new carnet`, ? as `cover from`, ? as `cover to`'
+                        , '? as `input serial`, ? as `new carnet`, ? as `cover from`, ? as `cover to`, ? as `group size`'
                     )
                 );
                 if ($tickets !== []) {
@@ -202,14 +202,14 @@ class JourneyApplication extends Application {
                             $connection,
                             /** @lang MariaDB */ <<< EOF
 # noinspection SqlResolve
-insert into `ticket uses` (`journey serial`, `ticket serial`, `carnet sequence`, `cover from`, `cover to`)
-    select ?, `input serial`, ifnull(max(`carnet sequence`), -1) + `new carnet`, input.`cover from`, input.`cover to`
+insert into `ticket uses` (`journey serial`, `ticket serial`, `carnet sequence`, `cover from`, `cover to`, `group size`)
+    select ?, `input serial`, ifnull(max(`carnet sequence`), -1) + `new carnet`, input.`cover from`, input.`cover to`, input.`group size`
     from `ticket uses`
         right join (select $parameters) as `input`
         on `ticket serial` = `input serial`
     group by `input serial`
 EOF
-                            , 'i' . str_repeat('iidd', count($tickets))
+                            , 'i' . str_repeat('iiddi', count($tickets))
                             , ...array_merge(
                                 [$id]
                                 , ...array_map(
@@ -218,6 +218,7 @@ EOF
                                         , (bool)($ticket['new carnet'] ?? 0)
                                         , nullif($ticket['cover from'] ?? '', '')
                                         , nullif($ticket['cover to'] ?? '', '')
+                                        , (int)($ticket['group size'] ?? 1)
                                     ]
                                     , $tickets
                                 )
@@ -287,6 +288,7 @@ select
     , tickets.currency
     , tickets.price
     , tickets.advance
+    , `ticket uses`.`group size`
     , tickets.carnets
     , `ticket uses`.`carnet sequence`
     , tickets.expired
@@ -308,6 +310,7 @@ EOF
                     , currencyCode: $ticket_row['currency']
                     , price: $ticket_row['price']
                     , advance: (bool)$ticket_row['advance']
+                    , groupSize: $ticket_row['group size']
                     , carnets: $ticket_row['carnets']
                     , carnetsUsed: $ticket_row['carnet sequence']
                     , expired: (bool)$ticket_row['expired']
@@ -408,6 +411,7 @@ EOF
                 , $row['currency']
                 , $row['price']
                 , (bool)$row['advance']
+                , null
                 , $row['carnets']
                 , $row['carnets used']
                 , (bool)$row['expired']

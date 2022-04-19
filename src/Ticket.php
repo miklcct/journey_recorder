@@ -12,6 +12,7 @@ class Ticket implements JsonSerializable {
         , public readonly string $currencyCode
         , public readonly int $price
         , public readonly bool $advance = false
+        , public readonly ?int $groupSize = null
         , public readonly int $carnets = 1
         , public readonly ?int $carnetsUsed = null
         , public readonly bool $expired = false
@@ -31,6 +32,7 @@ class Ticket implements JsonSerializable {
             , $data['currencyCode']
             , $data['price']
             , $data['advance'] ?? false
+            , $data['groupSize'] ?? null
             , $data['carnets']
             , $data['carnetsUsed'] ?? null
             , $data['expired']

@@ -54,11 +54,12 @@ if ($this->journey !== NULL) {
             <col class="distance_column" />
             <col class="currency_column" />
             <col />
+            <col />
         </colgroup>
         <thead>
-            <tr><th rowspan="3">From</th><th rowspan="3">To</th><th colspan="2">Ticket</th></tr>
-            <tr><th>Price</th><th>Advance</th></tr>
-            <tr><th>Carnet</th><th>Expired</th></tr>
+            <tr><th rowspan="3">From</th><th rowspan="3">To</th><th colspan="3">Ticket</th></tr>
+            <tr><th>Price</th><th>Advance</th><th>Group size</th></tr>
+            <tr><th>Carnet</th><th>Expired</th><th></th></tr>
         </thead>
         <tbody>
 <?php
@@ -67,15 +68,17 @@ if ($this->journey !== NULL) {
             <tr>
                 <td rowspan="3" class="distance_column number"><?= xml(nullable($ticket->coverFrom, fn($distance) => sprintf('%.2f', $distance)) ?? '') ?></td>
                 <td rowspan="3" class="distance_column number"><?= xml(nullable($ticket->coverTo, fn($distance) => sprintf('%.2f', $distance)) ?? '') ?></td>
-                <td colspan="2"><?= xml($ticket->description) ?></td>
+                <td colspan="3"><?= xml($ticket->description) ?></td>
             </tr>
             <tr>
                 <td><?= xml($ticket->currencyCode)?> <span class="number"><?= xml(format_currency($ticket->currencyCode, $ticket->price, true)) ?></span></td>
                 <td><?= xml($ticket->advance ? '✓' : '') ?></td>
+                <td><?= xml($ticket->groupSize) ?></td>
             </tr>
             <tr>
                 <td><?= xml(sprintf('#%d/%d', $ticket->carnetsUsed + 1, $ticket->carnets)) ?></td>
                 <td><?= xml($ticket->expired ? '✓' : '') ?></td>
+                <td></td>
             </tr>
 <?php
         }
@@ -251,6 +254,12 @@ for ($i = 0; $i < 5; ++$i) {
                         <div><label title="Enter 1 for a single, return or period. Enter the appropriate number for a carnet consisting of multiple identical tickets.">carnets <input data-required="ticket" type="number" value="1" min="1" step="1" name="ticket uses[<?= xml($i) ?>][carnets]"/></label></div>
                         <div><label title="Tick if the ticket requires quota-controlled reservation">advance <input type="checkbox" name="ticket uses[<?= xml($i) ?>][advance]" value="1"/></label></div>
                     </details>
+                </td>
+            </tr>
+            <tr>
+                <th><label title="Enter the number of people travelling together on this ticket" for="ticket_uses_<?= xml($i) ?>_group_size">group size</label></th>
+                <td>
+                    <input type="number" id="ticket_uses_<?= xml($i) ?>_group_size" name="ticket uses[<?= xml($i) ?>][group size]" value="1" min="1" step="1"/>
                 </td>
             </tr>
             <tr>

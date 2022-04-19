@@ -21,6 +21,7 @@ input {
 
 #tickets_used {
     border-collapse: collapse;
+    font-size: 0.8em;
 }
 
 #tickets_used th, #tickets_used td {
