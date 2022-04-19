@@ -1,5 +1,9 @@
 # Changelog
-## [1.3.2]
+## [1.4.0] - 2022-04-19
+ - Fix `carnet sequence` field in `ticket uses` table which should be not nullable.
+ - Add group ticket support.
+
+## [1.3.2] - 2022-04-07
  - Fix `carnet sequence` field in `ticket uses` table which should be unsigned.
    This prevents new tickets to be used without a new carnet.
 
