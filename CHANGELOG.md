@@ -1,4 +1,7 @@
 # Changelog
+## [1.4.2] - 2022-10-10
+ - Fix session loss despite daily use.
+
 ## [1.4.1] - 2022-04-19
  - Add serial into `journeys fare`
 

@@ -74,6 +74,7 @@ class JourneyApplication extends Application {
             $this->session->clear();
             $this->session->set('version', self::SESSION_VERSION);
         }
+        $this->session->regenerateId();
         if ($request->getMethod() === 'POST') {
             $this->processPostRequest($request);
             return $this->responseFactory->createResponse(RFC7231::SEE_OTHER)
