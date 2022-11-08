@@ -1,4 +1,8 @@
 # Changelog
+## [1.4.3] - 2022-11-08
+ - Add constraint `check boarding is not later than alighting`
+ - Fix session loss after failed request
+
 ## [1.4.2] - 2022-10-10
  - Fix session loss despite daily use.
 
