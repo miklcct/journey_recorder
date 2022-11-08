@@ -74,12 +74,13 @@ class JourneyApplication extends Application {
             $this->session->clear();
             $this->session->set('version', self::SESSION_VERSION);
         }
-        $this->session->regenerateId();
         if ($request->getMethod() === 'POST') {
             $this->processPostRequest($request);
+            $this->session->regenerateId();
             return $this->responseFactory->createResponse(RFC7231::SEE_OTHER)
                 ->withHeader('Location', $request->getUri()->__toString());
         }
+        $this->session->regenerateId();
         return ($this->journeyResponseFactory)(
             $request
             , $this->session->get('journey')
