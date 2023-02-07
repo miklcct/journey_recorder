@@ -1,4 +1,10 @@
 # Changelog
+## [1.4.4] - 2023-02-07
+ - Set `ticket uses.carnet sequence` as 0 by default, which is sensible for
+   non carnet tickets.
+ - Change the primary key of `ticket uses` to include `carnet sequence` to
+   allow using multiple carnets of the same ticket for a single journey.
+
 ## [1.4.3] - 2022-11-08
  - Add constraint `check boarding is not later than alighting`
  - Fix session loss after failed request
