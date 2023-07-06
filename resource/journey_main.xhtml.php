@@ -111,6 +111,7 @@ if ($this->journey !== NULL) {
                         <option value=""></option>
                         <optgroup label="Rail">
                             <option value="Train">Train</option>
+                            <option value="Metro">Metro</option>
                             <option value="Tram">Tram</option>
                             <option value="Funicular">Funicular</option>
                             <option value="Cable Car">Cable Car</option>
