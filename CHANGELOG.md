@@ -1,4 +1,6 @@
 # Changelog
+## [1.5.0] - 2023-07-06
+ - Add metro as a transport type in the UI (already supported in the database)
 ## [1.4.4] - 2023-02-07
  - Set `ticket uses.carnet sequence` as 0 by default, which is sensible for
    non carnet tickets.
