@@ -1,4 +1,6 @@
 # Changelog
+## [1.6.0-beta.1] - 2023-09-21
+ - First testing version with offline support (useful while on the tube)
 ## [1.5.0] - 2023-07-06
  - Add metro as a transport type in the UI (already supported in the database)
 ## [1.4.4] - 2023-02-07
