@@ -6,8 +6,9 @@ self.addEventListener(
         console.log(`Received request ${e.request.method} ${e.request.url}`);
         e.respondWith(
             (async () => {
+                let response = null;
                 try {
-                    const response = await fetch(e.request);
+                    response = await fetch(e.request);
                     if (!['opaque', 'opaqueredirect'].includes(response.type) && !response.ok) {
                         console.log(response);
                         throw new Error(`HTTP error while fetching ${e.request.url}`);
@@ -20,6 +21,9 @@ self.addEventListener(
                     }
                     return response;
                 } catch (ex) {
+                    if (response !== null) {
+                        return response;
+                    }
                     console.log(`${e.request.method} ${e.request.url} from network failed.`);
                     const result = await caches.match(e.request);
                     if (result) {
