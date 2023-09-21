@@ -1,5 +1,12 @@
 'use strict';
 
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('service_worker.js');
+    if (navigator.serviceWorker.controller === null) {
+        navigator.serviceWorker.ready.then(() => location.reload());
+    }
+}
+
 (
     function () {
         function show_saved_query_message() {
@@ -121,6 +128,10 @@
                         return null;
                     }
                 );
+                const setDisableOnInput = () => $('#last_button, #submit_button, #hidden_submit_button').attr('disabled', !window.navigator.onLine);
+                setDisableOnInput();
+                window.addEventListener('online', setDisableOnInput);
+                window.addEventListener('offline', setDisableOnInput);
             }
         );
     }
