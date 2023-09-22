@@ -76,6 +76,7 @@
                     }
                 );
                 const $ticket_description_inputs = $('#ticket_table input.ticket_description');
+                const $form = $('#form');
                 $('#submit_button,#hidden_submit_button').click(
                     function () {
                         $('#journey_table [data-required="required"]').attr('required', 'required');
@@ -93,15 +94,20 @@
                             .siblings()
                             .find('[data-required="ticket"]')
                             .removeAttr('required')
+                        localStorage.setItem('current', $('#last_journey').attr('data-serial'));
+                        localStorage.setItem('inserting', $form.serialize());
                     }
                 );
+                const inserting = localStorage.getItem('inserting');
+                if (inserting !== null && $('#last_journey').attr('data-serial') === localStorage.getItem('current')) {
+                    $form.deserialize(inserting);
+                }
                 $('#last_button').click(
                     function () {
                         $('#journey_table [data-required]').removeAttr('required');
                         $('#ticket_table [data-required]').removeAttr('required');
                     }
                 );
-                const $form = $('#form');
                 $('#push_button').click(
                     function () {
                         const serialised_data = localStorage.getItem('journeys') ?? '';

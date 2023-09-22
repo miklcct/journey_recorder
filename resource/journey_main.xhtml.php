@@ -19,7 +19,7 @@ if ($this->journey !== NULL) {
     $array = array_filter($this->journey->toArray(), static fn(string $key) => $key !== 'tickets', ARRAY_FILTER_USE_KEY);
 ?>
     <p>Last inserted journey:</p>
-    <table>
+    <table id="last_journey" data-serial="<?= xml($this->journey->serial)?>">
         <colgroup>
             <col class="header"/>
             <col class="content"/>
