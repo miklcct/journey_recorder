@@ -1,12 +1,5 @@
 'use strict';
 
-if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('service_worker.js');
-    if (navigator.serviceWorker.controller === null) {
-        navigator.serviceWorker.ready.then(() => location.reload());
-    }
-}
-
 (
     function () {
         function show_saved_query_message() {
@@ -20,6 +13,13 @@ if ('serviceWorker' in navigator) {
         document.addEventListener(
             'DOMContentLoaded'
             , function () {
+                if ('serviceWorker' in navigator) {
+                    navigator.serviceWorker.register('/journey_service_worker.js', {scope : document.getElementById('journey_script').getAttribute('data-scope')});
+                    if (navigator.serviceWorker.controller === null) {
+                        navigator.serviceWorker.ready.then(() => location.reload());
+                    }
+                }
+
                 ['boarding_time', 'alighting_time'].forEach(
                     function (time_field_id) {
                         const button_id = time_field_id + '_button';

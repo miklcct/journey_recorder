@@ -38,6 +38,7 @@ class JourneyResponseFactory implements JourneyResponseFactoryInterface {
                 , $this->defaultPort ?? $this->session->get('port', 3306)
                 , $this->defaultDatabase ?? $this->session->get('database')
                 , $this->defaultCurrency ?? $this->session->get('currency')
+                , scope: preg_replace('/\?.*$/', '', $request->getServerParams()['REQUEST_URI'])
             )
         );
     }

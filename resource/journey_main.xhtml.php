@@ -5,13 +5,14 @@ use Miklcct\JourneyRecorder\JourneyView;
 use function Miklcct\JourneyRecorder\format_currency;
 use function Miklcct\ThinPhpApp\Escaper\xml;
 use function Miklcct\ThinPhpApp\Utility\nullable;
+use function Safe\preg_replace;
 
 /** @var JourneyView $this */
 ?>
 <main>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery-deserialize@2.0.0/src/jquery.deserialize.min.js"></script>
-    <script src="<?= xml($this->scriptPath) ?>"></script>
+    <script id="journey_script" data-scope="<?= xml($this->scope) ?>" src="<?= xml($this->scriptPath) ?>"></script>
     <link rel="stylesheet" href="<?= xml($this->stylesheetPath) ?>"/>
     <?php
 if ($this->journey !== NULL) {
