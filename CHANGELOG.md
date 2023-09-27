@@ -1,4 +1,7 @@
 # Changelog
+## [1.6.0-beta.5] - 2023-09-27
+ - Add rail replacement as a type
+
 ## [1.6.0-beta.4] - 2023-09-27
  - Add coach as a type
 

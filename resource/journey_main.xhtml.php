@@ -123,6 +123,7 @@ if ($this->journey !== NULL) {
                             <option value="Bus">Bus</option>
                             <option value="Trolleybus">Trolleybus</option>
                             <option value="Share taxi">Share taxi</option>
+                            <option value="Rail replacement">Rail replacement</option>
                         </optgroup>
                         <optgroup label="Air &amp; Water">
                             <option value="Ferry">Ferry</option>
