@@ -1,4 +1,7 @@
 # Changelog
+## [1.6.0-beta.3] - 2023-09-22
+ - Limit the scope of service worker to the page only (for use as part of another website).
+
 ## [1.6.0-beta.2] - 2023-09-22
  - Save the journey being submitted and populate it on page reload unless submission succeeds.
 

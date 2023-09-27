@@ -17,6 +17,7 @@ class JourneyView extends PhpTemplate {
         , protected readonly ?string $defaultCurrency = null
         , protected readonly string $scriptPath = 'scripts/journey.js'
         , protected readonly string $stylesheetPath = 'stylesheets/journey.css'
+        , protected readonly string $scope = '/'
     ) {
         parent::__construct($streamFactory);
     }

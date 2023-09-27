@@ -12,9 +12,11 @@ under the document root to the `public` folder.
 1. Load the schema provided in `resource/base.sql` and all migrations in `resource/migrations/up` into a MariaDB database.
 2. Provide your implementation of `JourneyResponseFactoryInterface` such that the UI fits into your website.
 The `JourneyView` class and `journey_main.xhtml.php` template is a good starting point.
-If you are using them, copy or link the script and stylesheet into your public folder
+If you are using them, link `scripts/journey.js` and `stylesheets/journey.css` into your public folder
 and pass the web path into the `JourneyView` constructor.
-3. Add a route in your website to have `JourneyApplication`, which is PSR-15 compliant, as the controller.
+3. If you want the offline functionality, link `journey_service_worker.js` into your public folder as well and register
+it in your script. The provided `scripts/journey.js` does that, in this case it must be put in the root of the public folder.
+4. Add a route in your website to have `JourneyApplication`, which is PSR-15 compliant, as the controller.
 
 ## Usage
 This application is for recording journeys only.
@@ -31,6 +33,10 @@ If no tickets are shown, use the "Get the last inserted journey" button to load 
 The "push into queue" and "pop from queue" buttons are provided to save the form and load it later
 when it's not ready for submission, or in situations when you are temporarily lacking internet access
 (such as in the Tube).
+
+If the browser supports service workers and the default script is used, the script registers a service worker to cache
+resources needed for the application, such that it is usable while offline. Also, the submit buttons are disabled while
+offline.
 
 ## Database migrations
 The migration files are organised in the structure required by `byjg/migration` package.
