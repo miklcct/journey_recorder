@@ -1,4 +1,7 @@
 # Changelog
+## [1.6.0-beta.4] - 2023-09-27
+ - Add coach as a type
+
 ## [1.6.0-beta.3] - 2023-09-22
  - Limit the scope of service worker to the page only (for use as part of another website).
 
