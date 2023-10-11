@@ -1,4 +1,9 @@
 # Changelog
+## [1.6.0-beta.6] - 2023-10-11
+ - Allow the use of the same ticket on the same journey under the following circumstances:
+   - Different carnets of the same ticket may be used without distance restriction
+   - The same carnet may be used on a journey provided that the distance ranges covered are distinct
+
 ## [1.6.0-beta.5] - 2023-09-27
  - Add rail replacement as a type
 

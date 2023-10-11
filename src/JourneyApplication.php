@@ -190,42 +190,28 @@ class JourneyApplication extends Application {
                         query_database($connection, 'update tickets set expired = true where serial = ?', 'i', $ticket['serial']);
                     }
                 }
-                $parameters = implode(
-                    ' union select '
-                    , array_fill(
-                        0
-                        , count($tickets)
-                        , '? as `input serial`, ? as `new carnet`, ? as `cover from`, ? as `cover to`, ? as `group size`'
-                    )
-                );
                 if ($tickets !== []) {
                     try {
-                        query_database(
-                            $connection,
-                            /** @lang MariaDB */ <<< EOF
+                        foreach ($tickets as $ticket) {
+                            query_database(
+                                $connection,
+                                /** @lang MariaDB */ <<< EOF
 # noinspection SqlResolve
 insert into `ticket uses` (`journey serial`, `ticket serial`, `carnet sequence`, `cover from`, `cover to`, `group size`)
     select ?, `input serial`, ifnull(max(`carnet sequence`), -1) + `new carnet`, input.`cover from`, input.`cover to`, input.`group size`
     from `ticket uses`
-        right join (select $parameters) as `input`
+        right join (select ? as `input serial`, ? as `new carnet`, ? as `cover from`, ? as `cover to`, ? as `group size`) as `input`
         on `ticket serial` = `input serial`
-    group by `input serial`
 EOF
-                            , 'i' . str_repeat('iiddi', count($tickets))
-                            , ...array_merge(
-                                [$id]
-                                , ...array_map(
-                                    static fn(array $ticket) : array => [
-                                        $ticket['serial']
-                                        , (bool)($ticket['new carnet'] ?? 0)
-                                        , nullif($ticket['cover from'] ?? '', '')
-                                        , nullif($ticket['cover to'] ?? '', '')
-                                        , (int)($ticket['group size'] ?? 1)
-                                    ]
-                                    , $tickets
-                                )
-                            )
-                        );
+                                , 'iiiddi'
+                                , $id
+                                , $ticket['serial']
+                                , (bool)($ticket['new carnet'] ?? 0)
+                                , nullif($ticket['cover from'] ?? '', '')
+                                , nullif($ticket['cover to'] ?? '', '')
+                                , (int)($ticket['group size'] ?? 1)
+                            );
+                        }
                     } catch (mysqli_sql_exception $exception) {
                         throw new HttpException(
                             'Cannot insert ticket usages into database: '
