@@ -43,6 +43,23 @@ The migration files are organised in the structure required by `byjg/migration` 
 However, the use of the library is not necessary. If you want to use it for your database(s),
 install the CLI interface by running `composer global require byjg/migration-cli`.
 
+## Defects
+Some database column names may be misleading. However, to prevent compatibility issues, they will only be fixed in the
+next major release:
+* The database should be unit agnostic on distance but some columns assume the use of km as the unit of distance:
+  * `tickets view`.`price per km`
+  * `journeys fare`.`fare per km`
+
+  These should all mean per distance instead of per km to allow the use of alternative distance units.
+* `tickets view`.`distance travelled` means person-distance travelled, while `tickets view`.`segments travelled` means 
+segments travelled regardless of number of people using that ticket
+* `advance` does not adequately cover all pre-purchase requirement:
+  * Quota-controlled tickets are sold against a quota. They are not guaranteed to be available.
+    * A ticket is quota-controlled if it must be bought against a specific service and not valid on any others without changing it,
+    even if the price never changes, as walk-up travel is not guaranteed.
+  * Advance purchase non-quota-controlled tickets are always available before a specified deadline, but not immediately before travel.
+  * Walk up tickets are guaranteed to be available at the time of travel.
+
 ## Demos
 The following demos can be used for testing, but due to privacy concern
 (data will go through servers under author's control) they are not suggested
