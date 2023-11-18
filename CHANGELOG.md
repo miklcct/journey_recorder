@@ -1,4 +1,7 @@
 # Changelog
+## [1.6.0-beta.7] - 2023-11-18
+ - Change precision of the time from 1 minute to 1 second
+
 ## [1.6.0-beta.6] - 2023-10-11
  - Allow the use of the same ticket on the same journey under the following circumstances:
    - Different carnets of the same ticket may be used without distance restriction

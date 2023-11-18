@@ -39,6 +39,7 @@
                                     const day = date.getDate();
                                     const hour = date.getHours();
                                     const minute = date.getMinutes();
+                                    const second = date.getSeconds();
 
                                     return year
                                         + '-'
@@ -52,7 +53,10 @@
                                         + hour
                                         + ':'
                                         + (minute < 10 ? '0' : '')
-                                        + minute;
+                                        + minute
+                                        + ':'
+                                        + (second < 10 ? '0' : '')
+                                        + second;
                                 }
 
                                 document.getElementById(time_field_id).value

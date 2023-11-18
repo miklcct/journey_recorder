@@ -5,7 +5,6 @@ use Miklcct\JourneyRecorder\JourneyView;
 use function Miklcct\JourneyRecorder\format_currency;
 use function Miklcct\ThinPhpApp\Escaper\xml;
 use function Miklcct\ThinPhpApp\Utility\nullable;
-use function Safe\preg_replace;
 
 /** @var JourneyView $this */
 ?>
@@ -171,6 +170,7 @@ $show_time_input = function (string $time_field, string $time_offset_field) {
                     name="<?= xml($time_field_id) ?>"
                     type="datetime-local"
                     data-required="required"
+                    step="1"
             />
             <button type="button" id="<?= xml("{$time_field_id}_button") ?>">•</button>
         </td>

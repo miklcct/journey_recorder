@@ -42,15 +42,16 @@ class Journey implements JsonSerializable {
             $negative = ($data['time taken'][0] ?? null) === '-';
             sscanf(
                 $data['time taken']
-                , '%d:%d'
+                , '%d:%d:%d'
                 , $h
                 , $m
+                , $s
             );
             if ($negative) {
                 $h = -$h;
             }
             $journey->timeTaken
-                = new DateInterval("PT{$h}H{$m}M");
+                = new DateInterval("PT{$h}H{$m}M{$s}S");
             if ($negative) {
                 $journey->timeTaken->invert = 1;
             }
@@ -80,11 +81,11 @@ class Journey implements JsonSerializable {
             'boarding place' => $this->boardingPlace,
             'alighting place' => $this->alightingPlace,
             'cabin number' => $this->cabinNumber,
-            'boarding time' => $this->boardingTime->format('Y-m-d H:i'),
+            'boarding time' => $this->boardingTime->format('Y-m-d H:i:s'),
             'boarding time offset' => $this->boardingTime->getOffset() / 3600,
-            'alighting time' => $this->alightingTime->format('Y-m-d H:i'),
+            'alighting time' => $this->alightingTime->format('Y-m-d H:i:s'),
             'alighting time offset' => $this->alightingTime->getOffset() / 3600,
-            'time taken' => $this->timeTaken->format('%r%H:%I'),
+            'time taken' => $this->timeTaken->format('%r%H:%I:%S'),
             'distance' => $this->distance,
             'speed' => $this->speed,
             'tickets' => array_map(static fn(Ticket $ticket) => $ticket->jsonSerialize(), $this->tickets),

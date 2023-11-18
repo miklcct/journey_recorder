@@ -133,7 +133,7 @@ class JourneyApplication extends Application {
     : string
     {
         return $timestamp->setTimezone(new DateTimeZone('UTC'))
-            ->format('Y-m-d H:i' /* no seconds */);
+            ->format('Y-m-d H:i:s');
     }
 
     private function processPostRequest(ServerRequestInterface $request) : void {
