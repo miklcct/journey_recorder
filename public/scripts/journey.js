@@ -31,7 +31,18 @@
 
                         document.getElementById(offset_field_id).value = get_offset();
                         const time_field = document.getElementById(time_field_id);
+                        function styleToMap(style) {
+                            return new Map(Array.from(style).map(key => [key, style[key]]));
+                        }
+                        const original_style = styleToMap(window.getComputedStyle(time_field));
                         time_field.setAttribute('readonly', 'readonly');
+                        const modified_style = styleToMap(window.getComputedStyle(time_field));
+                        for (const property of original_style.keys()) {
+                            if (modified_style.get(property) !== original_style.get(property)) {
+                                time_field.style[property] = original_style.get(property);
+                            }
+                        }
+
                         const parent = time_field.parentElement;
                         parent.setAttribute('data-td-target-toggle', `#${time_field_id}`);
                         parent.setAttribute('data-td-target-input', `#${time_field_id}`);

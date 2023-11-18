@@ -1,4 +1,7 @@
 # Changelog
+## [1.6.0-beta.9] - 2023-11-18
+- Prevent change of styles when setting readonly attribute on datetime-local input fields
+
 ## [1.6.0-beta.8] - 2023-11-18
 - Add a date picker
   This is to work around some mobile browsers not showing seconds in the native datetime input widget  
