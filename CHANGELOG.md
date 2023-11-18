@@ -1,4 +1,7 @@
 # Changelog
+## [1.6.0-beta.10] - 2023-11-18
+- Remove readonly on datetime-local fields when submitting the form to allow validation
+
 ## [1.6.0-beta.9] - 2023-11-18
 - Prevent change of styles when setting readonly attribute on datetime-local input fields
 

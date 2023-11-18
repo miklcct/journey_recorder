@@ -132,9 +132,17 @@
                 );
                 const $ticket_description_inputs = $('#ticket_table input.ticket_description');
                 const $form = $('#form');
+                const $readonly_elements = $('[readonly]');
+                $readonly_elements.on('invalid', () => {
+                    alert('Please fill in the time.');
+                });
+                $('input').on('invalid', () => {
+                    $readonly_elements.attr('readonly', 'readonly');
+                });
                 $('#submit_button,#hidden_submit_button').click(
                     function () {
                         $('#journey_table [data-required="required"]').attr('required', 'required');
+                        $readonly_elements.removeAttr('readonly');
                         $ticket_description_inputs
                             .filter((_, element) => (element.value !== ''))
                             .parent()
