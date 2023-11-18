@@ -1,4 +1,8 @@
 # Changelog
+## [1.6.0-beta.8] - 2023-11-18
+- Add a date picker
+  This is to work around some mobile browsers not showing seconds in the native datetime input widget  
+
 ## [1.6.0-beta.7] - 2023-11-18
  - Change precision of the time from 1 minute to 1 second
 

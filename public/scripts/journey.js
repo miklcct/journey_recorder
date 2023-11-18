@@ -30,6 +30,46 @@
                         }
 
                         document.getElementById(offset_field_id).value = get_offset();
+                        const time_field = document.getElementById(time_field_id);
+                        time_field.setAttribute('readonly', 'readonly');
+                        const parent = time_field.parentElement;
+                        parent.setAttribute('data-td-target-toggle', `#${time_field_id}`);
+                        parent.setAttribute('data-td-target-input', `#${time_field_id}`);
+                        const picker = new tempusDominus.TempusDominus(
+                            parent
+                            , {
+                                display : {
+                                    icons : {
+                                        today: 'fa-solid fa-circle',
+                                    },
+                                    buttons : {
+                                        today : true,
+                                        clear : true,
+                                        close : true,
+                                    },
+                                    toolbarPlacement : 'top',
+                                    sideBySide : false,
+                                    viewMode : 'clock',
+                                    components : {
+                                        seconds : true,
+                                    }
+                                },
+                                localization : {
+                                    hourCycle : 'h23',
+                                    format : 'yyyy-MM-dd[T]HH:mm:ss'
+                                },
+                                useCurrent : false,
+                            }
+                        );
+                        picker.subscribe(
+                            tempusDominus.Namespace.events.show
+                            , () => {
+                                if (time_field.value === '') {
+                                    picker.dates.setValue(new tempusDominus.DateTime());
+                                }
+                                picker.dates.setFromInput(time_field.value);
+                            }
+                        )
                         document.getElementById(button_id).addEventListener(
                             'click'
                             , function () {
@@ -59,7 +99,7 @@
                                         + second;
                                 }
 
-                                document.getElementById(time_field_id).value
+                                time_field.value
                                     = format_date(new Date());
                                 document.getElementById(offset_field_id).value
                                     = get_offset();
