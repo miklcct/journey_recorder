@@ -11,8 +11,7 @@ import './journey.css';
         function show_saved_query_message() {
             $('#saved_journeys_message')
                 .text(
-                    'Number of saved journeys: '
-                    + ((localStorage.getItem('journeys') ?? '').match(/\n/g) ?? []).length
+                    `Number of saved journeys: ${((localStorage.getItem('journeys') ?? '').match(/\n/g) ?? []).length}`
                 );
         }
 
@@ -20,7 +19,7 @@ import './journey.css';
             'DOMContentLoaded'
             , function () {
                 if ('serviceWorker' in navigator) {
-                    navigator.serviceWorker.register('/journey_service_worker.js', {scope : document.getElementById('journey_script').getAttribute('data-scope')});
+                    navigator.serviceWorker.register('/journey_service_worker.js', {scope : document.getElementById('journey_script')?.getAttribute('data-scope') ?? undefined});
                     if (navigator.serviceWorker.controller === null) {
                         navigator.serviceWorker.ready.then(() => location.reload());
                     }
@@ -28,28 +27,28 @@ import './journey.css';
 
                 ['boarding_time', 'alighting_time'].forEach(
                     function (time_field_id) {
-                        const button_id = time_field_id + '_button';
-                        const offset_field_id = time_field_id + '_offset';
+                        const button_id = `${time_field_id}_button`;
+                        const offset_field_id = `${time_field_id}_offset`;
 
                         function get_offset() {
                             return (new Date).getTimezoneOffset() / -60;
                         }
 
-                        document.getElementById(offset_field_id).value = get_offset();
-                        const time_field = document.getElementById(time_field_id);
-                        function styleToMap(style) {
-                            return new Map(Array.from(style).map(key => [key, style[key]]));
+                        (document.getElementById(offset_field_id) as HTMLInputElement).value = String(get_offset());
+                        const time_field = document.getElementById(time_field_id) as HTMLInputElement;
+                        function styleToMap(style : CSSStyleDeclaration) {
+                            return new Map(Array.from(style).map(key => [key, style.getPropertyValue(key)]));
                         }
                         const original_style = styleToMap(window.getComputedStyle(time_field));
                         time_field.setAttribute('readonly', 'readonly');
                         const modified_style = styleToMap(window.getComputedStyle(time_field));
                         for (const property of original_style.keys()) {
                             if (modified_style.get(property) !== original_style.get(property)) {
-                                time_field.style[property] = original_style.get(property);
+                                time_field.style.setProperty(property, original_style.get(property) ?? null);
                             }
                         }
 
-                        const parent = time_field.parentElement;
+                        const parent = time_field.parentElement!;
                         parent.setAttribute('data-td-target-toggle', `#${time_field_id}`);
                         parent.setAttribute('data-td-target-input', `#${time_field_id}`);
                         const picker = new tempusDominus.TempusDominus(
@@ -86,11 +85,11 @@ import './journey.css';
                                 }
                                 picker.dates.setFromInput(time_field.value);
                             }
-                        )
-                        document.getElementById(button_id).addEventListener(
+                        );
+                        document.getElementById(button_id)!.addEventListener(
                             'click'
                             , function () {
-                                function format_date(date) {
+                                function format_date(date : Date) {
                                     const year = date.getFullYear();
                                     const month = date.getMonth() + 1;
                                     const day = date.getDate();
@@ -98,46 +97,36 @@ import './journey.css';
                                     const minute = date.getMinutes();
                                     const second = date.getSeconds();
 
-                                    return year
-                                        + '-'
-                                        + (month < 10 ? '0' : '')
-                                        + month
-                                        + '-'
-                                        + (day < 10 ? '0' : '')
-                                        + day
-                                        + 'T'
-                                        + (hour < 10 ? '0' : '')
-                                        + hour
-                                        + ':'
-                                        + (minute < 10 ? '0' : '')
-                                        + minute
-                                        + ':'
-                                        + (second < 10 ? '0' : '')
-                                        + second;
+                                    function pad(x : number) {
+                                        return `${x < 10 ? '0' : ''}${x}`;
+                                    }
+
+                                    return `${year}-${pad(month)}-${pad(day)}T${pad(hour)}:${pad(minute)}:${pad(second)}`;
                                 }
 
                                 time_field.value
                                     = format_date(new Date());
-                                document.getElementById(offset_field_id).value
-                                    = get_offset();
+                                (document.getElementById(offset_field_id) as HTMLInputElement).value
+                                    = String(get_offset());
                             }
-                        )
+                        );
                     }
                 );
                 show_saved_query_message();
             }
         );
 
-        $(document).ready(
+        $(
             function () {
-                $('#ticket_table select').change(
-                    function () {
+                $('#ticket_table select').on(
+                    'change'
+                    , function (this : HTMLSelectElement) {
                         $(this).siblings('details').find('input')
-                            .prop('disabled', this.value !== '')
+                            .prop('disabled', this.value !== '');
                     }
                 );
-                const $ticket_description_inputs = $('#ticket_table input.ticket_description');
-                const $form = $('#form');
+                const $ticket_description_inputs : JQuery<HTMLInputElement> = $('#ticket_table input.ticket_description');
+                const $form : JQuery<HTMLFormElement> = $('#form');
                 const $readonly_elements = $('[readonly]');
                 $readonly_elements.on('invalid', () => {
                     alert('Please fill in the time.');
@@ -145,65 +134,74 @@ import './journey.css';
                 $('input').on('invalid', () => {
                     $readonly_elements.attr('readonly', 'readonly');
                 });
-                $('#submit_button,#hidden_submit_button').click(
-                    function () {
+                const current_serial = $('#last_journey').attr('data-serial');
+                $('#submit_button,#hidden_submit_button').on(
+                    'click'
+                    , function () {
                         $('#journey_table [data-required="required"]').attr('required', 'required');
                         $readonly_elements.removeAttr('readonly');
                         $ticket_description_inputs
-                            .filter((_, element) => (element.value !== ''))
+                            .filter((_, element) => element.value !== '')
                             .parent()
                             .parent()
                             .siblings()
                             .find('[data-required="ticket"]')
                             .attr('required', 'required');
                         $ticket_description_inputs
-                            .filter((_, element) => (element.value === ''))
+                            .filter((_, element) => element.value === '')
                             .parent()
                             .parent()
                             .siblings()
                             .find('[data-required="ticket"]')
-                            .removeAttr('required')
-                        localStorage.setItem('current', $('#last_journey').attr('data-serial'));
+                            .removeAttr('required');
+                        if (current_serial !== undefined) {
+                            localStorage.setItem('current', current_serial);
+                        } else {
+                            localStorage.removeItem('current');
+                        }
                         localStorage.setItem('inserting', $form.serialize());
                     }
                 );
                 const inserting = localStorage.getItem('inserting');
-                if (inserting !== null && $('#last_journey').attr('data-serial') === localStorage.getItem('current')) {
+                if (inserting !== null && current_serial === localStorage.getItem('current')) {
                     $form.deserialize(inserting);
                 }
-                $('#last_button').click(
-                    function () {
+                $('#last_button').on(
+                    'click'
+                    , function () {
                         $('#journey_table [data-required]').removeAttr('required');
                         $('#ticket_table [data-required]').removeAttr('required');
                     }
                 );
-                $('#push_button').click(
-                    function () {
+                $('#push_button').on(
+                    'click'
+                    , function () {
                         const serialised_data = localStorage.getItem('journeys') ?? '';
-                        localStorage.setItem('journeys', serialised_data + $form.serialize() + "\n");
+                        localStorage.setItem('journeys', `${serialised_data + $form.serialize()}\n`);
                         show_saved_query_message();
                         $form[0].reset();
-                        $('#ticket_table select').change();
+                        $('#ticket_table select').trigger('change');
                     }
                 );
-                $('#pop_button').click(
-                    function () {
+                $('#pop_button').on(
+                    'click'
+                    , function () {
                         const serialised_data = localStorage.getItem('journeys') ?? '';
                         const index = serialised_data.indexOf("\n");
                         if (index === -1) {
                             alert('Queue is empty.');
                             return false;
                         }
-                        const entry = serialised_data.substr(0, index);
+                        const entry = serialised_data.substring(0, index);
                         localStorage.setItem('journeys', serialised_data.substring(index + 1));
                         show_saved_query_message();
                         $("input[type='checkbox']").prop('checked', false);
                         $form.deserialize(entry);
-                        $('#ticket_table select').change();
+                        $('#ticket_table select').trigger('change');
                         return null;
                     }
                 );
-                const setDisableOnInput = () => $('#last_button, #submit_button, #hidden_submit_button').attr('disabled', !window.navigator.onLine);
+                const setDisableOnInput = () => $('#last_button, #submit_button, #hidden_submit_button').prop('disabled', !window.navigator.onLine);
                 setDisableOnInput();
                 window.addEventListener('online', setDisableOnInput);
                 window.addEventListener('offline', setDisableOnInput);

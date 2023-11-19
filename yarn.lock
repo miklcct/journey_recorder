@@ -185,6 +185,22 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/jquery@npm:^3.5.27":
+  version: 3.5.27
+  resolution: "@types/jquery@npm:3.5.27"
+  dependencies:
+    "@types/sizzle": "npm:*"
+  checksum: 437b0c8e631446c7e811dd493e7f6f4fdc234f97fc95e3d2722290451dac9203e8400850ee9a53916c06f8d3540e25833ae7eea3eb10edab82fc1aeeaa085f69
+  languageName: node
+  linkType: hard
+
+"@types/sizzle@npm:*":
+  version: 2.3.6
+  resolution: "@types/sizzle@npm:2.3.6"
+  checksum: 0856664ac06e3bdbd8075be2a4f29e4eb511e2081201e7b5a62297348ff4d7b7d02ad203798ec9ecf5b01f03a4be6f2814c30eca4d5445c8ad260c76444ebf14
+  languageName: node
+  linkType: hard
+
 "esbuild@npm:^0.19.6":
   version: 0.19.6
   resolution: "esbuild@npm:0.19.6"
@@ -269,6 +285,7 @@ __metadata:
     "@eonasdan/tempus-dominus": "npm:^6.7.19"
     "@fortawesome/fontawesome-free": "npm:^6.4.2"
     "@popperjs/core": "npm:^2.11.8"
+    "@types/jquery": "npm:^3.5.27"
     esbuild: "npm:^0.19.6"
     jquery: "npm:^3.7.1"
     jquery-deserialize: "npm:^2.0.0"

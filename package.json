@@ -9,5 +9,8 @@
     "jquery": "^3.7.1",
     "jquery-deserialize": "^2.0.0",
     "typescript": "^5.2.2"
+  },
+  "devDependencies": {
+    "@types/jquery": "^3.5.27"
   }
 }

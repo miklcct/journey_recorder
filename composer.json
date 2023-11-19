@@ -45,9 +45,9 @@
             },
             {
                 "title" : "Build Javascript",
-                "run" : "@sh yarn run esbuild scripts/journey.js --bundle --loader:.woff=dataurl --loader:.woff2=dataurl --loader:.ttf=dataurl --outfile=public/journey.js",
+                "run" : "@sh yarn run esbuild scripts/journey.ts --bundle --loader:.woff=dataurl --loader:.woff2=dataurl --loader:.ttf=dataurl --outfile=public/journey.js",
                 "watch-files" : [
-                    "scripts/journey.js"
+                    "scripts/journey.ts"
                 ]
             }
         ]
