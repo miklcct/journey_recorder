@@ -1,4 +1,7 @@
 # Changelog
+## [1.6.0-beta.11] - 2023-11-19
+- Use esbuild to manage Javascript dependencies
+
 ## [1.6.0-beta.10] - 2023-11-18
 - Remove readonly on datetime-local fields when submitting the form to allow validation
 

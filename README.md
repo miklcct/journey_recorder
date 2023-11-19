@@ -2,21 +2,28 @@
 
 This application helps you to record your public transport journeys while on the go.
 
+## System requirements
+* PHP: ^8.1 (with mysqli extension)
+* Composer
+* Yarn
+
 ## Installation
 ### As a standalone application
-1. Load the schema provided in `resource/base.sql` and all migrations in `resource/migrations/up` into a MariaDB database.
-2. Configure your web server to have `public` as the document root, or link a subfolder
+1. Run `composer create-project miklcct/journey_recorder`
+2. Load the schema provided in `resource/base.sql` and all migrations in `resource/migrations/up` into a MariaDB database.
+3. Configure your web server to have `public` as the document root, or link a subfolder
 under the document root to the `public` folder.
 
-### As a library used in a website
-1. Load the schema provided in `resource/base.sql` and all migrations in `resource/migrations/up` into a MariaDB database.
-2. Provide your implementation of `JourneyResponseFactoryInterface` such that the UI fits into your website.
+### As a library used in a PHP application
+1. Run `composer require miklcct/journey_recorder` in your PHP application.
+2. Load the schema provided in `resource/base.sql` and all migrations in `resource/migrations/up` into a MariaDB database.
+3. Provide your implementation of `JourneyResponseFactoryInterface` such that the UI fits into your website.
 The `JourneyView` class and `journey_main.xhtml.php` template is a good starting point.
 If you are using them, link `scripts/journey.js` and `stylesheets/journey.css` into your public folder
 and pass the web path into the `JourneyView` constructor.
-3. If you want the offline functionality, link `journey_service_worker.js` into your public folder as well and register
+4. If you want the offline functionality, link `journey_service_worker.js` into your public folder as well and register
 it in your script. The provided `scripts/journey.js` does that, in this case it must be put in the root of the public folder.
-4. Add a route in your website to have `JourneyApplication`, which is PSR-15 compliant, as the controller.
+5. Add a route in your website to have `JourneyApplication`, which is PSR-15 compliant, as the controller.
 
 ## Usage
 This application is for recording journeys only.
