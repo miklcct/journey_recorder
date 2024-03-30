@@ -1,4 +1,9 @@
 # Changelog
+## [1.6.0] - 2024-03-30
+- Change `boarding time stamp` and `alighting time stamp` to `datetime` instead of `timestamp`
+  to avoid time zone issues. These two columns always represent the time in UTC time zone.
+- Add `boarding time` and `alighting time` generated columns in journeys.
+
 ## [1.6.0-beta.11] - 2023-11-19
 - Use esbuild to manage Javascript dependencies
 

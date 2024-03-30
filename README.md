@@ -66,6 +66,9 @@ segments travelled regardless of number of people using that ticket
     even if the price never changes, as walk-up travel is not guaranteed.
   * Advance purchase non-quota-controlled tickets are always available before a specified deadline, but not immediately before travel.
   * Walk up tickets are guaranteed to be available at the time of travel.
+* `boarding time stamp` and `alighting time stamp` represent the time in UTC time zone. 
+  These are no longer `timestamp` columns since version 1.6.0 because of time zone issues when trying to calculate
+  local time in a stored column.
 
 ## Demos
 The following demos can be used for testing, but due to privacy concern
