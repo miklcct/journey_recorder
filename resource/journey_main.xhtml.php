@@ -57,7 +57,7 @@ if ($this->journey !== NULL) {
         <thead>
             <tr><th rowspan="3">From</th><th rowspan="3">To</th><th colspan="3">Ticket</th></tr>
             <tr><th>Price</th><th>Advance</th><th>Group size</th></tr>
-            <tr><th>Carnet</th><th>Expired</th><th></th></tr>
+            <tr><th>Carnet</th><th>Premium</th><th>Expired</th></tr>
         </thead>
         <tbody>
 <?php
@@ -75,8 +75,8 @@ if ($this->journey !== NULL) {
             </tr>
             <tr>
                 <td><?= xml(sprintf('#%d/%d', $ticket->carnetsUsed + 1, $ticket->carnets)) ?></td>
+                <td><?= xml($ticket->premium ? '✓' : '') ?></td>
                 <td><?= xml($ticket->expired ? '✓' : '') ?></td>
-                <td></td>
             </tr>
 <?php
         }
@@ -255,6 +255,7 @@ for ($i = 0; $i < 5; ++$i) {
                         <div><label>price <input data-required="ticket" type="number" min="0" step="any" name="ticket uses[<?= xml($i) ?>][price]"/></label></div>
                         <div><label title="Enter 1 for a single, return or period. Enter the appropriate number for a carnet consisting of multiple identical tickets.">carnets <input data-required="ticket" type="number" value="1" min="1" step="1" name="ticket uses[<?= xml($i) ?>][carnets]"/></label></div>
                         <div><label title="Tick if the ticket requires quota-controlled reservation">advance <input type="checkbox" name="ticket uses[<?= xml($i) ?>][advance]" value="1"/></label></div>
+                        <div><label title="Tick if the ticket is for travel in a premium class, e.g. First Class, Business Class or similar">premium <input type="checkbox" name="ticket uses[<?= xml($i) ?>][premium]" value="1"/></label></div>
                     </details>
                 </td>
             </tr>

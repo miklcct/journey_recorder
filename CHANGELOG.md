@@ -1,4 +1,7 @@
 # Changelog
+## [1.7.0] - 2025-06-09
+- Add support for premium tickets.
+
 ## [1.6.0] - 2024-03-30
 - Change `boarding time stamp` and `alighting time stamp` to `datetime` instead of `timestamp`
   to avoid time zone issues. These two columns always represent the time in UTC time zone.

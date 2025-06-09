@@ -163,12 +163,13 @@ class JourneyApplication extends Application {
                         try {
                             $insert_ticket_statement = query_database(
                                 $connection
-                                , 'insert into tickets (description, currency, price, advance, carnets) values (?, ?, ?, ?, ?)'
-                                , 'ssiii'
+                                , 'insert into tickets (description, currency, price, advance, premium, carnets) values (?, ?, ?, ?, ?, ?)'
+                                , 'ssiiii'
                                 , $ticket['description']
                                 , $ticket['currency']
                                 , (int)round($ticket['price'] * 10 ** get_currency_digits(strtoupper($ticket['currency'])))
                                 , $ticket['advance'] ?? false
+                                , $ticket['premium'] ?? false
                                 , $ticket['carnets']
                             );
                         } catch (mysqli_sql_exception $exception) {
@@ -276,6 +277,7 @@ select
     , tickets.currency
     , tickets.price
     , tickets.advance
+    , tickets.premium
     , `ticket uses`.`group size`
     , tickets.carnets
     , `ticket uses`.`carnet sequence`
@@ -298,6 +300,7 @@ EOF
                     , currencyCode: $ticket_row['currency']
                     , price: $ticket_row['price']
                     , advance: (bool)$ticket_row['advance']
+                    , premium: (bool)$ticket_row['premium']
                     , groupSize: $ticket_row['group size']
                     , carnets: $ticket_row['carnets']
                     , carnetsUsed: $ticket_row['carnet sequence']
@@ -382,7 +385,7 @@ EOF
         $statement = query_database(
             $connection
             , <<< 'EOF'
-select serial, description, currency, price, advance, carnets, `carnets used`, expired
+select serial, description, currency, price, advance, premium, carnets, `carnets used`, expired
     from `tickets view`
     where not expired
     order by serial
@@ -399,6 +402,7 @@ EOF
                 , $row['currency']
                 , $row['price']
                 , (bool)$row['advance']
+                , (bool)$row['premium']
                 , null
                 , $row['carnets']
                 , $row['carnets used']
