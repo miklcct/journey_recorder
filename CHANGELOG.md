@@ -1,4 +1,7 @@
 # Changelog
+## [1.7.1] - 2026-06-03
+- Symfony 7 compatibility
+
 ## [1.7.0] - 2025-06-09
 - Add support for premium tickets.
 
